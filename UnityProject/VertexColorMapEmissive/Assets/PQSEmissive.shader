@@ -1,4 +1,4 @@
-﻿Shader "VertexColorMapEmissive/PQSEmssive" {
+﻿Shader "VertexColorMapEmissive/PQSEmissive" {
 	Properties {
 		_Color ("Color", Color) = (1,1,1,1)
 		_Map ("Map", 2D) = "white" {}
