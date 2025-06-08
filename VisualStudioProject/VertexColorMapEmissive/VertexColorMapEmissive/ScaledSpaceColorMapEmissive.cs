@@ -1,15 +1,10 @@
 ﻿
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 using Kopernicus.ConfigParser.Attributes;
 using Kopernicus.ConfigParser.BuiltinTypeParsers;
 using Kopernicus.ConfigParser.Interfaces;
 using Kopernicus.Configuration.Parsing;
-using Kopernicus.Components;
 
 namespace VertexColorMapEmissive
 {
@@ -18,8 +13,34 @@ namespace VertexColorMapEmissive
     {
         private Material EmissiveMaterial;
 
+        public enum BlendModes
+        {
+            Additive,
+            AlphaBlend,
+        }
+
+        public BlendModes blendMode = BlendModes.AlphaBlend;
+
+        [ParserTarget("blendMode")]
+        public EnumParser<BlendModes> BlendMode
+        {
+            get { return blendMode; }
+            set
+            {
+                blendMode = value.Value;
+                if (blendMode == BlendModes.Additive)
+                {
+                    EmissiveMaterial = new Material(Kopernicus.Components.ShaderLoader.GetShader("VertexColorMapEmissive/ScaledEmissive"));
+                }
+                else
+                {
+                    EmissiveMaterial = new Material(Kopernicus.Components.ShaderLoader.GetShader("VertexColorMapEmissive/ScaledEmissiveOld"));
+                }
+            }
+        }
+
         [ParserTarget("map")]
-        private Texture2DParser map
+        private Texture2DParser Map
         {
             get { return (Texture2D)EmissiveMaterial.GetTexture("_Map"); }
             set { EmissiveMaterial.SetTexture("_Map", value); }
@@ -41,10 +62,7 @@ namespace VertexColorMapEmissive
 
         void IParserEventSubscriber.Apply(ConfigNode node)
         {
-            EmissiveMaterial = new Material(Kopernicus.Components.ShaderLoader.GetShader("VertexColorMapEmissive/ScaledEmissive"));
-            EmissiveMaterial.SetFloat("_Brightness", 1f);
-            EmissiveMaterial.SetFloat("_Transparency", 0.5f);
-
+            EmissiveMaterial = new Material(Kopernicus.Components.ShaderLoader.GetShader("VertexColorMapEmissive/ScaledEmissiveOld"));
             Material sharedMaterial = generatedBody.scaledVersion.GetComponent<Renderer>().sharedMaterial;
             EmissiveMaterial.SetTexture("_Map", sharedMaterial.GetTexture("_MainTex"));
         }

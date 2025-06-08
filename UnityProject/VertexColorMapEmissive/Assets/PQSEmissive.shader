@@ -3,17 +3,19 @@
 		_Color ("Color", Color) = (1,1,1,1)
 		_Map ("Map", 2D) = "white" {}
 		_Brightness ("Brightness", Float) = 1
-		_Transparency ("Transparency", Float) = 0.5
+		_Transparency ("Transparency", Float) = 1
 	}
 
 	SubShader {
+		Offset -1, -1
         Pass
         {
 			Tags { "Queue"="Transparent" "RenderType"="Transparent" }
 			LOD 250
-			Blend SrcAlpha OneMinusSrcAlpha
+			Blend One One
 
 			CGPROGRAM
+
 			#pragma vertex vert
 			#pragma fragment frag
 			#define PI 3.1415926535897932384626
@@ -54,10 +56,9 @@
 				uv.y = acos(cubeVectNorm.y)/PI;
 				uv.zw = float2(0, 0);
 				color = tex2Dlod (_Map, uv);
-		
-				color.rgb = _Brightness * color.rgb;
-				color.a = _Transparency * color.a;
 
+				color.rgb = _Brightness * color.rgb * _Transparency * color.a;
+				
 				return color;
 			}
 			ENDCG
