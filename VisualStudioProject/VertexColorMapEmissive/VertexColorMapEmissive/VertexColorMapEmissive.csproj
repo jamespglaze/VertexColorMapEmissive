@@ -14,6 +14,8 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>VertexColorMapEmissive</RootNamespace>
     <AssemblyName>VertexColorMapEmissive</AssemblyName>
+    <Version>1.1.0</Version>
+    <FileVersion>1.1.0.0</FileVersion>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -58,10 +60,14 @@
   </ItemGroup>
   <!-- Version Files -->
   <ItemGroup>
-    <KSPVersionFile Include="VertexColorMapEmissive.version">
+    <KSPVersionFile Include=".">
       <Destination>$(RepoRootPath)/../../GameData/001_DuckweedUtils/VertexColorMapEmissive/VertexColorMapEmissive.version</Destination>
       <URL>https://github.com/jamespglaze/VertexColorMapEmissive/releases/latest/download/VertexColorMapEmissive.version</URL>
       <Download>https://github.com/jamespglaze/VertexColorMapEmissive/releases/latest</Download>
+      <Version>$(Version)</Version>
+      <KSP_Version>1.12</KSP_Version>
+      <KSP_Version_Min>1.12</KSP_Version_Min>
+      <KSP_Version_Max>1.12</KSP_Version_Max>
     </KSPVersionFile>
   </ItemGroup>
   <ItemGroup>
