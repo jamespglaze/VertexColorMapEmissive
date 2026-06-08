@@ -4,6 +4,7 @@
 		_Map ("Map", 2D) = "white" {}
 		_Brightness ("Brightness", Float) = 1
 		_Transparency ("Transparency", Float) = 1
+		_PlanetOpacity ("PlanetOpacity", Float) = 0
 	}
 
 	SubShader {
@@ -22,6 +23,7 @@
 			sampler2D _Map;
 			float _Brightness;
 			float _Transparency;
+			float _PlanetOpacity;
 			float4x4 _WorldtoPlanet;
 
 			struct appdata_t {
@@ -57,7 +59,7 @@
 				uv.zw = float2(0, 0);
 				color = tex2Dlod (_Map, uv);
 
-				color.rgb = _Brightness * color.rgb * _Transparency * color.a;
+				color.rgb = _Brightness * color.rgb * _Transparency * color.a * (1-_PlanetOpacity);
 				
 				return color;
 			}

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Smooth.Collections;
+using System;
+using System.Linq;
 using UnityEngine;
 using static PQS;
 
@@ -19,18 +21,16 @@ namespace VertexColorMapEmissive
         public override void OnPostSetup()
         {
             sphere.useSharedMaterial = true;
+            EmissiveMaterial.renderQueue = sphere.surfaceMaterial.renderQueue + 10;
+            sphere.materialsForUpdates.Add(EmissiveMaterial);
         }
 
         public override void OnQuadBuilt(PQ quad)
         {
             if (quad.sphereRoot != sphere)
                 return;
-            Material surfaceMaterial = quad.meshRenderer.sharedMaterial;
-            Material emissiveMaterial = new Material(EmissiveMaterial)
-            {
-                renderQueue = surfaceMaterial.renderQueue + 10
-            };
-            quad.meshRenderer.sharedMaterials = new Material[] { surfaceMaterial, emissiveMaterial };
+            Material[] sharedMaterials = quad.meshRenderer.sharedMaterials;
+            quad.meshRenderer.sharedMaterials = sharedMaterials.Append(EmissiveMaterial).ToArray();
         }
 
         public override void OnQuadDestroy(PQ quad)
